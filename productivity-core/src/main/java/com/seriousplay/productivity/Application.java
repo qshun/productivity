@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @author changqingshun
  */
 @SpringBootApplication(scanBasePackages = {"com.seriousplay.productivity"})
-@ImportResource({"classpath*:spring-*.xml"})
+@ImportResource({"classpath*:META-INF/spring/spring-*.xml"})
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @EnableCaching
