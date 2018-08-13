@@ -1,6 +1,6 @@
 package com.seriousplay.productivity.web.rest;
 
-import com.zayy.sport.mybatis.MapperRefresher;
+import com.seriousplay.productivity.mybatis.MapperRefresher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,0 +1,3 @@
+mybatis:
+  mapper-locations:  classpath*:META-INF/mybatis/**/*.xml
+  type-aliases-package: com.seriousplay.*.*.model

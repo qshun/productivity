@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: demo
+  profiles:
+    active:
+      - mybatis
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/activiti?useSSL=false&serverTimezone=UTC
+      username: root
+      password: 1qaz2wsx
+      name: ds001
+      filters:
+      filter:
+        log4j2:
+          enabled: true
+        wall:
+          enabled: true
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 3000
+          db-type: mysql
+      stat-view-servlet:
+        enabled: true
+        login-username: admin
+        login-password: admin

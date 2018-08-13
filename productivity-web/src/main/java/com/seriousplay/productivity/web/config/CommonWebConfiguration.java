@@ -1,17 +1,16 @@
 package com.seriousplay.productivity.web.config;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
-public class CommonWebConfiguration extends WebMvcConfigurerAdapter {
+@Component
+public class CommonWebConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        super.addCorsMappings(registry);
         registry.addMapping("/api/**")
                 .allowCredentials(true)
                 .allowedHeaders("*")

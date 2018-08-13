@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.seriousplay.productivity</groupId>
@@ -12,6 +12,8 @@
         <java.version>1.8</java.version>
         <project.vsersion>1.0-SNAPSHOT</project.vsersion>
         <spring.cloud.zookeeper.version>2.0.0.RELEASE</spring.cloud.zookeeper.version>
+        <druid.version>1.1.10</druid.version>
+        <mysql.version>6.0.6</mysql.version>
     </properties>
     <parent>
         <groupId>com.alipay.sofa</groupId>
@@ -69,6 +71,32 @@
                 <groupId>com.seriousplay.productivity</groupId>
                 <artifactId>productivity-security</artifactId>
                 <version>${project.vsersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId>
+                <version>${spring.boot.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>*</groupId>
+                        <artifactId>*</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
