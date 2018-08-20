@@ -25,3 +25,14 @@ spring:
         enabled: true
         login-username: admin
         login-password: admin
+com:
+  alipay:
+    sofa:
+      rpc:
+        registry-address: zookeeper://localhost:2181
+        bolt-accepts-size: 10000
+        bolt-port: 28900
+        bolt-thread-pool-core-size: 50
+        bolt-thread-pool-queue-size: 800
+        dubbo-port: 28901
+        bound-host: localhost

@@ -1,7 +1,8 @@
 package com.seriousplay.productivity.mybatis.grid;
 
-import org.hibernate.validator.constraints.NotBlank;
 
+
+import javax.validation.constraints.NotBlank;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@MapperScan(annotationClass = Mapper.class, markerInterface = MybatisMapper.class, basePackages = "com.zayy.sport.**.mapper")
+@MapperScan(annotationClass = Mapper.class, markerInterface = MybatisMapper.class, basePackages = "com.seriousplay.**.mapper")
 public class MybatisConfiguration {
     @Autowired
     MybatisProperties mybatisProperties;
