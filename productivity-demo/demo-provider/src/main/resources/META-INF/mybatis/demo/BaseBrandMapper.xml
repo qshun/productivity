@@ -8,7 +8,7 @@
     <result column="create_time_" jdbcType="TIMESTAMP" property="create_time_" />
     <result column="status_" jdbcType="VARCHAR" property="status_" />
   </resultMap>
-  <sql id="Example_Where_Clause">
+  <sql id="Example_Where_Clause" lang="xml">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -37,7 +37,7 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
+  <sql id="Update_By_Example_Where_Clause" lang="xml">
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
@@ -69,7 +69,7 @@
   <sql id="Base_Column_List">
     id_, name_, description_, create_time_, status_
   </sql>
-  <select id="selectByExample" parameterType="com.seriousplay.productivity.demo.model.BrandExample" resultMap="BaseResultMap">
+  <select id="selectByExample" lang="xml" parameterType="com.seriousplay.productivity.demo.model.BrandExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -84,23 +84,23 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" lang="xml" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 'false' as QUERYID,
     <include refid="Base_Column_List" />
     from t_brand
     where id_ = #{id_,jdbcType=VARCHAR}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" lang="xml" parameterType="java.lang.String">
     delete from t_brand
     where id_ = #{id_,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.seriousplay.productivity.demo.model.Brand">
+  <insert id="insert" lang="xml" parameterType="com.seriousplay.productivity.demo.model.Brand">
     insert into t_brand (id_, name_, description_, 
       create_time_, status_)
     values (#{id_,jdbcType=VARCHAR}, #{name_,jdbcType=VARCHAR}, #{description_,jdbcType=VARCHAR}, 
       #{create_time_,jdbcType=TIMESTAMP}, #{status_,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.seriousplay.productivity.demo.model.Brand">
+  <insert id="insertSelective" lang="xml" parameterType="com.seriousplay.productivity.demo.model.Brand">
     insert into t_brand
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id_ != null">
@@ -137,7 +137,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" lang="xml" parameterType="map">
     update t_brand
     <set>
       <if test="record.id_ != null">
@@ -160,7 +160,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByExample" lang="xml" parameterType="map">
     update t_brand
     set id_ = #{record.id_,jdbcType=VARCHAR},
       name_ = #{record.name_,jdbcType=VARCHAR},
@@ -171,7 +171,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.seriousplay.productivity.demo.model.Brand">
+  <update id="updateByPrimaryKeySelective" lang="xml" parameterType="com.seriousplay.productivity.demo.model.Brand">
     update t_brand
     <set>
       <if test="name_ != null">
@@ -189,7 +189,7 @@
     </set>
     where id_ = #{id_,jdbcType=VARCHAR}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.seriousplay.productivity.demo.model.Brand">
+  <update id="updateByPrimaryKey" lang="xml" parameterType="com.seriousplay.productivity.demo.model.Brand">
     update t_brand
     set name_ = #{name_,jdbcType=VARCHAR},
       description_ = #{description_,jdbcType=VARCHAR},
@@ -197,4 +197,20 @@
       status_ = #{status_,jdbcType=VARCHAR}
     where id_ = #{id_,jdbcType=VARCHAR}
   </update>
+  <cache />
+  <select id="selectByExampleWithRowbounds" parameterType="com.seriousplay.productivity.demo.model.BrandExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'false' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_brand
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
 </mapper>

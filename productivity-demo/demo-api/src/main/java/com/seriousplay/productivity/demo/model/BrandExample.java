@@ -444,6 +444,26 @@ public class BrandExample {
             addCriterion("status_ not between", value1, value2, "status_");
             return (Criteria) this;
         }
+
+        public Criteria andId_LikeInsensitive(String value) {
+            addCriterion("upper(id_) like", value.toUpperCase(), "id_");
+            return (Criteria) this;
+        }
+
+        public Criteria andName_LikeInsensitive(String value) {
+            addCriterion("upper(name_) like", value.toUpperCase(), "name_");
+            return (Criteria) this;
+        }
+
+        public Criteria andDescription_LikeInsensitive(String value) {
+            addCriterion("upper(description_) like", value.toUpperCase(), "description_");
+            return (Criteria) this;
+        }
+
+        public Criteria andStatus_LikeInsensitive(String value) {
+            addCriterion("upper(status_) like", value.toUpperCase(), "status_");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {
