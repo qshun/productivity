@@ -198,7 +198,7 @@
     where id_ = #{id_,jdbcType=VARCHAR}
   </update>
   <cache />
-  <select id="selectByExampleWithRowbounds" parameterType="com.seriousplay.productivity.demo.model.BrandExample" resultMap="BaseResultMap">
+  <select id="selectByExampleWithRowbounds" lang="xml" parameterType="com.seriousplay.productivity.demo.model.BrandExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
