@@ -4,16 +4,26 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-
-    <!-- <classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />-->
-    <context id="DB2Tables" targetRuntime="MyBatis3">
+    <properties resource="generator.properties"/>
+    <context id="demo" targetRuntime="MyBatis3">
+        <plugin type="org.mybatis.generator.plugins.CachePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.FluentBuilderMethodsPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <plugin type="com.seriousplay.productivity.mybatis.generator.LangDriverPlugin">
+            <property name="lang" value="xml"/>
+        </plugin>
+       <!-- <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin"/>-->
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://114.115.142.235:8635/sport_shop?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"
-                        userId="root"
-                        password="1@34Asdf">
+        <jdbcConnection driverClass="${mybatis.generator.jdbcDriver}"
+                        connectionURL="${mybatis.generator.jdbcURL}"
+                        userId="${mybatis.generator.jdbcUserId}"
+                        password="${mybatis.generator.jdbcPassword}">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
