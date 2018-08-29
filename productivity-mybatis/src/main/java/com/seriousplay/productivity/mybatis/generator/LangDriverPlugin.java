@@ -1,18 +1,21 @@
 package com.seriousplay.productivity.mybatis.generator;
 
-import org.mybatis.generator.api.GeneratedXmlFile;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.xml.Attribute;
 import org.mybatis.generator.api.dom.xml.Document;
 import org.mybatis.generator.api.dom.xml.XmlElement;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * @author changqingshun
  */
 public class LangDriverPlugin extends PluginAdapter {
+    static List<String> elements = Arrays.asList("sql", "select","insert","update","delete");
     private String lang = "xml";
 
     /**
@@ -28,114 +31,35 @@ public class LangDriverPlugin extends PluginAdapter {
     }
 
     @Override
-    public boolean sqlMapResultMapWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        return super.sqlMapResultMapWithoutBLOBsElementGenerated(element, introspectedTable);
-
-    }
-
-    @Override
-    public boolean sqlMapCountByExampleElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapCountByExampleElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapDeleteByExampleElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapDeleteByExampleElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapDeleteByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapDeleteByPrimaryKeyElementGenerated(element, introspectedTable);
-    }
-
-    @Override
     public boolean sqlMapDocumentGenerated(Document document, IntrospectedTable introspectedTable) {
+        List<XmlElement> addLangElements = new ArrayList<>(document.getRootElement().getElements().size());
+        document.getRootElement().getElements().forEach(one -> {
+            XmlElement element = (XmlElement) one;
+            if (elements.contains(((XmlElement) one).getName())) {
+                if ("sql".equals(element.getName())) {
+                    Iterator<Attribute> attributes = element.getAttributes().iterator();
+                    while (attributes.hasNext()) {
+                        Attribute attr = attributes.next();
+                        String attrname = attr.getName();
+                        if ("id".equals(attrname)) {
+                            if (attr.getValue().contains("Example_Where_Clause")) {
+                                addLangElements.add(element);
+                            }
+                        } else {
+                            continue;
+                        }
+                    }
+                }else {
+                    addLangElements.add(element);
+                }
+
+            }else {
+
+            }
+        });
+        if (addLangElements.size() > 0) {
+            addLangElements.forEach(this::addLangAttribute);
+        }
         return super.sqlMapDocumentGenerated(document, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapExampleWhereClauseElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapExampleWhereClauseElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapGenerated(GeneratedXmlFile sqlMap, IntrospectedTable introspectedTable) {
-        return super.sqlMapGenerated(sqlMap, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapInsertElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapInsertElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapResultMapWithBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-
-        return super.sqlMapResultMapWithBLOBsElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapSelectByExampleWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapSelectByExampleWithoutBLOBsElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapSelectByExampleWithBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapSelectByExampleWithBLOBsElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapSelectByPrimaryKeyElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapSelectByPrimaryKeyElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapUpdateByExampleSelectiveElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapUpdateByExampleSelectiveElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapUpdateByExampleWithBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapUpdateByExampleWithBLOBsElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapUpdateByExampleWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapUpdateByExampleWithoutBLOBsElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapUpdateByPrimaryKeySelectiveElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapUpdateByPrimaryKeySelectiveElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapUpdateByPrimaryKeyWithBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapUpdateByPrimaryKeyWithBLOBsElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapUpdateByPrimaryKeyWithoutBLOBsElementGenerated(element, introspectedTable);
-    }
-
-    @Override
-    public boolean sqlMapInsertSelectiveElementGenerated(XmlElement element, IntrospectedTable introspectedTable) {
-        addLangAttribute(element);
-        return super.sqlMapInsertSelectiveElementGenerated(element, introspectedTable);
     }
 }
