@@ -27,7 +27,7 @@
         <module>productivity-rpc</module>
         <module>productivity-mybatis</module>
         <module>productivity-security</module>
-        <module>producttivity-mybatis-genarator</module>
+        <module>productivity-mybatis-genarator</module>
     </modules>
     <dependencyManagement>
         <dependencies>
