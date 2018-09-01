@@ -41,7 +41,7 @@
                     </dependency>
                     <dependency>
                         <groupId>com.seriousplay.productivity</groupId>
-                        <artifactId>productivity-mybatis</artifactId>
+                        <artifactId>productivity-mybatis-genarator</artifactId>
                         <version>1.0-SNAPSHOT</version>
                     </dependency>
                 </dependencies>
