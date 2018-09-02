@@ -3,10 +3,9 @@ package com.seriousplay.productivity.mybatis;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.session.Configuration;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -24,7 +23,7 @@ public class MapperRefresher implements InitializingBean {
     /**
      *
      */
-    static final Logger logger = LogManager.getLogger(MapperRefresher.class);
+    static final Logger logger = LoggerFactory.getLogger(MapperRefresher.class);
     /**
      *
      */
@@ -102,7 +101,7 @@ public class MapperRefresher implements InitializingBean {
                 resource.setVersion(vserion);
             }
         } catch (Exception e) {
-            logger.catching(e);
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -168,11 +167,6 @@ public class MapperRefresher implements InitializingBean {
         //mapConfig.clear();
     }
 
-    public void onApplicationEvent(ApplicationEvent event) {
-        logger.debug(event);
-    }
-
-
     public static class MapperRescource {
         private String name;
         private long version;
@@ -233,6 +227,7 @@ public class MapperRefresher implements InitializingBean {
         }
 
         @SuppressWarnings("unchecked")
+        @Override
         public V put(String key, V value) {
             // ThinkGem 如果现在状态为刷新，则刷新(先删除后添加)
             remove(key);
@@ -251,6 +246,7 @@ public class MapperRefresher implements InitializingBean {
             return super.put(key, value);
         }
 
+        @Override
         public V get(Object key) {
             V value = super.get(key);
             if (value == null) {

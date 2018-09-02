@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *
+ * @author changqingshun
  */
 public abstract class MybatisOperation {
     private String mapper;
     private String namespace;
     private Map<String, Object> paramMap = new HashMap<>(20);
 
-    public  MybatisOperation(String mapper, String namespace) {
+    public MybatisOperation(String mapper, String namespace) {
         this();
         this.mapper = mapper;
         this.namespace = namespace;

@@ -1,11 +1,11 @@
 package com.seriousplay.productivity.mybatis.grid;
 
+import com.seriousplay.productivity.mybatis.MapperRefresher;
 import com.seriousplay.productivity.mybatis.MyBatisTemplate;
 import com.seriousplay.productivity.mybatis.MybatisOperationUtils;
 import com.seriousplay.productivity.mybatis.MybatisSelectOperation;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +19,8 @@ import java.util.Map;
  */
 @Component
 public class MybatisDtPager implements IDTPager {
-    static Logger logger = LogManager.getLogger(MybatisDtPager.class);
+    static final Logger logger = LoggerFactory.getLogger(MapperRefresher.class);
+
     @Autowired
     private MyBatisTemplate myBatisTemplate;
 
@@ -28,8 +29,8 @@ public class MybatisDtPager implements IDTPager {
 
         DTPageHelper<T> ret = new DTPageHelper<>();
         try {
-            MybatisSelectOperation selectOperation = MybatisOperationUtils.selectList(namespace,mapper)
-                    .param(paramMap).param("_count_",true);
+            MybatisSelectOperation selectOperation = MybatisOperationUtils.selectList(namespace, mapper)
+                    .param(paramMap).param("_count_", true);
             Map<String, Object> count = myBatisTemplate.selectOne(selectOperation);
             long c = Long.parseLong(count.get("_count_").toString());
             ret.setRecordsFiltered(c);
@@ -42,11 +43,11 @@ public class MybatisDtPager implements IDTPager {
                 selectOperation.rowBounds(start, length);
                 List<T> list = this.myBatisTemplate.selectList(selectOperation);
                 ret.setData(list);
-            }else {
+            } else {
                 ret.setData(Collections.emptyList());
             }
         } catch (Exception e) {
-            logger.catching(Level.ERROR, e);
+            logger.error(e.getMessage(), e);
             ret.setData(Collections.emptyList());
             ret.setRecordsTotal(0);
             ret.setRecordsFiltered(0);
