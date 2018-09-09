@@ -56,5 +56,10 @@
             <artifactId>resteasy-netty</artifactId>
             <version>3.0.7.Final</version>
         </dependency>
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-core</artifactId>
+            <version>0.1.1</version>
+        </dependency>
     </dependencies>
 </project>
