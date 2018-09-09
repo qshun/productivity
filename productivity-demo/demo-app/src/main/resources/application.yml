@@ -4,6 +4,7 @@ spring:
   profiles:
     active:
       - mybatis
+      - dubbo
   datasource:
     druid:
       url: jdbc:mysql://localhost:3306/activiti?useSSL=false&serverTimezone=UTC
@@ -25,18 +26,19 @@ spring:
         enabled: true
         login-username: admin
         login-password: admin
-com:
-  alipay:
-    sofa:
-      rpc:
-        registry-address: zookeeper://localhost:2181
-        bolt-accepts-size: 10000
-        bolt-port: 28900
-        bolt-thread-pool-core-size: 50
-        bolt-thread-pool-queue-size: 800
-        dubbo-port: 28901
-        bound-host: localhost
+
 logging:
   level:
     root: info
+    com.alibaba.dubbo: info
+    org.springframework.boot.autoconfigure.condition: debug
+management:
+  endpoint:
+    beans:
+      enabled: true
+  health:
+    redis:
+      enabled: true
+    db:
+      enabled: true
 
