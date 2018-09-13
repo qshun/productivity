@@ -1,13 +1,18 @@
 package com.seriousplay.productivity.demo.model;
 
+
+import org.jboss.resteasy.annotations.jaxrs.FormParam;
+import org.jboss.resteasy.annotations.jaxrs.QueryParam;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Brand implements Serializable {
     private String id_;
-
+    @FormParam
+    @QueryParam
     private String name_;
-
+    @FormParam
     private String description_;
 
     private Date create_time_;

@@ -26,6 +26,11 @@ spring:
         enabled: true
         login-username: admin
         login-password: admin
+  data:
+    elasticsearch:
+      repositories:
+        enabled: false
+      cluster-nodes: localhost:9200
 
 logging:
   level:

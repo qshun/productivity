@@ -15,9 +15,10 @@
         <druid.version>1.1.10</druid.version>
         <mysql.version>6.0.6</mysql.version>
         <curator.version>4.0.1</curator.version>
-        <spring.boot.version>2.0.4.RELEASE</spring.boot.version>
+        <spring.boot.version>2.0.5.RELEASE</spring.boot.version>
         <dubbo.version>2.6.3</dubbo.version>
         <dubbo.boot.version>0.2.0</dubbo.boot.version>
+        <resteasy.version>3.6.1.Final</resteasy.version>
     </properties>
     <modules>
         <module>productivity-core</module>
@@ -108,6 +109,13 @@
                 <groupId>com.alibaba.boot</groupId>
                 <artifactId>dubbo-spring-boot-actuator</artifactId>
                 <version>${dubbo.boot.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-bom</artifactId>
+                <version>${resteasy.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
