@@ -30,13 +30,13 @@ spring:
     elasticsearch:
       repositories:
         enabled: false
-      cluster-nodes: localhost:9200
 
 logging:
   level:
     root: info
     com.alibaba.dubbo: info
     org.springframework.boot.autoconfigure.condition: debug
+    org.elasticsearch: debug
 management:
   endpoint:
     beans:
