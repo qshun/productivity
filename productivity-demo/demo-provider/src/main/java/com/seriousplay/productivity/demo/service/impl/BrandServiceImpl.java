@@ -41,7 +41,7 @@ public class BrandServiceImpl implements BrandService {
      * @return
      */
     @GET
-    @Path("list")
+    @Path("/list")
     @Produces(MediaType.APPLICATION_JSON)
     @Override
     public List<Brand> getBrandList() {
