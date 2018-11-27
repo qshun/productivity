@@ -9,7 +9,15 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class JsonUtils {
-    public static ObjectMapper objectMapper;
+    static ObjectMapper objectMapper = new ObjectMapper();
+
+    /**
+     *
+     * @return
+     */
+    public static ObjectMapper objectMapper() {
+        return objectMapper;
+    }
 
     @Autowired
     public void init(ObjectMapper objectMapper) {

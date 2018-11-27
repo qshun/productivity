@@ -12,14 +12,14 @@ dubbo:
       id: dubbo
       name: dubbo
       port: 20880
+      serialization: kryo
     rest:
       id: rest
       name: rest
       port: 20881
       server: netty
+      contextpath: rest
   registries:
     zookeeper:
       address: zookeeper://localhost:2181
 
-  protocol:
-    serialization: kryo
