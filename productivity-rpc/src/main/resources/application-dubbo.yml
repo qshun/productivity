@@ -3,10 +3,9 @@ dubbo:
     multiple: true
   scan:
     basePackages: com.seriousplay.productivity
-  applications:
-    demo:
-      id: demo
-      name: demo
+  application:
+    id: demo
+    name: demo
   protocols:
     dubbo:
       id: dubbo

@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication(scanBasePackages = {"com.seriousplay.productivity"})
 @ImportResource({"classpath*:META-INF/spring/spring-*.xml"})
 @EnableAspectJAutoProxy
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
 @EnableCaching
 public class Application {
     public static void main(String[] args) {
