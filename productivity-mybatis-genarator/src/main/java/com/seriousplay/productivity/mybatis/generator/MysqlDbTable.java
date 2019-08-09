@@ -1,4 +1,4 @@
-package com.seriousplay.productitity.generator;
+package com.seriousplay.productivity.mybatis.generator;
 
 import com.baomidou.mybatisplus.generator.config.querys.MySqlQuery;
 

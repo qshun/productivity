@@ -12,6 +12,18 @@
     <artifactId>productivity-jdbc</artifactId>
     <dependencies>
         <dependency>
+            <groupId>com.seriousplay.productivity</groupId>
+            <artifactId>productivity-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-jdbc</artifactId>
         </dependency>

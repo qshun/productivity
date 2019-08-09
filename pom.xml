@@ -14,17 +14,19 @@
         <spring.boot.version>2.1.7.RELEASE</spring.boot.version>
         <druid.version>1.1.19</druid.version>
         <mysql.version>6.0.6</mysql.version>
-        <curator.version>4.0.1</curator.version>
         <mybatis-plus.version>3.1.2</mybatis-plus.version>
         <commons-lang3.version>3.9</commons-lang3.version>
         <dubbo.version>2.7.3</dubbo.version>
         <dubbo.boot.version>2.7.1</dubbo.boot.version>
+        <curator.version>4.2.0</curator.version>
         <resteasy.version>3.8.1.Final</resteasy.version>
         <sentinel.version>1.6.3</sentinel.version>
         <kryo.version>4.0.2</kryo.version>
         <kryo-serializers.version>0.45</kryo-serializers.version>
+        <nacos-client.version>1.1.3</nacos-client.version>
     </properties>
     <modules>
+        <module>productivity-commons</module>
         <module>productivity-core</module>
         <module>productivity-web</module>
         <module>productivity-rpc</module>
@@ -58,6 +60,11 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
             <!--mybatis-plus end-->
@@ -131,6 +138,12 @@
                 <artifactId>sentinel-core</artifactId>
                 <version>${sentinel.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alibaba.nacos</groupId>
+                <artifactId>nacos-client</artifactId>
+                <version>${nacos-client.version}</version>
+            </dependency>
+
             <!--dubbo end-->
             <dependency>
                 <groupId>com.seriousplay.productivity</groupId>
@@ -155,6 +168,11 @@
             <dependency>
                 <groupId>com.seriousplay.productivity</groupId>
                 <artifactId>productivity-security</artifactId>
+                <version>${project.vsersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.seriousplay.productivity</groupId>
+                <artifactId>productivity-commons</artifactId>
                 <version>${project.vsersion}</version>
             </dependency>
         </dependencies>
