@@ -70,7 +70,6 @@ public class MyBatisTemplate {
      * @return
      */
     public <T> T selectOne(MybatisSelectOperation selectOperation) {
-
         return this.sqlSessionTemplate.selectOne(selectOperation.getSqlMapper(), selectOperation.getParamMap());
     }
 }

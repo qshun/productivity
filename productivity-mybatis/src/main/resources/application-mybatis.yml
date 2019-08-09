@@ -1,5 +1,0 @@
-mybatis:
-  mapper-locations:  classpath*:META-INF/mybatis/**/*.xml
-  type-aliases-package: com.seriousplay.*.*.model
-  configuration:
-    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
