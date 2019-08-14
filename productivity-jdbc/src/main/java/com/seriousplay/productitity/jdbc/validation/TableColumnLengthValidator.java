@@ -1,4 +1,4 @@
-package com.seriousplay.productitity.jdbc.validate;
+package com.seriousplay.productitity.jdbc.validation;
 
 import com.seriousplay.productitity.jdbc.metadata.TableMetaData;
 import org.springframework.validation.Errors;

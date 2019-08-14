@@ -1,4 +1,4 @@
-package com.seriousplay.productitity.jdbc.validate;
+package com.seriousplay.productitity.jdbc.validation;
 
 import java.math.BigDecimal;
 
