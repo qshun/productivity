@@ -1,4 +1,7 @@
-package com.seriousplay.productitity.jdbc;
+package com.seriousplay.productitity.jdbc.metadata;
+
+import com.seriousplay.productitity.jdbc.FieldStrategy;
+import com.seriousplay.productitity.jdbc.SqlOperator;
 
 import java.util.function.BiFunction;
 
