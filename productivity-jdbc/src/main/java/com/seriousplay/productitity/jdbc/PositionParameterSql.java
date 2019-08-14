@@ -1,5 +1,6 @@
 package com.seriousplay.productitity.jdbc;
 
+import com.seriousplay.productitity.jdbc.query.functions.SqlFunction;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Collection;
@@ -77,7 +78,7 @@ public class PositionParameterSql {
     void appendParameter(Object parameter) {
         if (parameter instanceof Collection) {
             Collection collection = (Collection) parameter;
-            if (! CollectionUtils.isEmpty(collection)) {
+            if (!CollectionUtils.isEmpty(collection)) {
                 appendParameters(collection);
             }
         } else if (parameter instanceof Object[]) {

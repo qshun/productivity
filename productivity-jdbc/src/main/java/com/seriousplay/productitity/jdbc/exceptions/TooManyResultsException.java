@@ -1,4 +1,4 @@
-package com.seriousplay.productitity.jdbc;
+package com.seriousplay.productitity.jdbc.exceptions;
 
 import org.springframework.dao.NonTransientDataAccessException;
 

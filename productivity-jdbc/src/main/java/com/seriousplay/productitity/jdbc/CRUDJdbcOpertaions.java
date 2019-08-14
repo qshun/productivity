@@ -1,5 +1,8 @@
 package com.seriousplay.productitity.jdbc;
 
+import com.seriousplay.productitity.jdbc.exceptions.TooManyResultsException;
+import com.seriousplay.productitity.jdbc.metadata.TableColumnMetaData;
+import com.seriousplay.productitity.jdbc.metadata.TableMetaData;
 import com.seriousplay.productitity.jdbc.query.DeleteQuery;
 import com.seriousplay.productitity.jdbc.query.SelectQuery;
 import com.seriousplay.productitity.jdbc.query.UpdateQuery;

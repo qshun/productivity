@@ -1,4 +1,4 @@
-package com.seriousplay.productitity.jdbc;
+package com.seriousplay.productitity.jdbc.query.functions;
 
 /**
  *

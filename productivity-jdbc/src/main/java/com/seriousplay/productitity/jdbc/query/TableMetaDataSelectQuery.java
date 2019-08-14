@@ -1,7 +1,7 @@
 package com.seriousplay.productitity.jdbc.query;
 
-import com.seriousplay.productitity.jdbc.TableColumnMetaData;
-import com.seriousplay.productitity.jdbc.TableMetaData;
+import com.seriousplay.productitity.jdbc.metadata.TableColumnMetaData;
+import com.seriousplay.productitity.jdbc.metadata.TableMetaData;
 
 import java.util.function.BiFunction;
 

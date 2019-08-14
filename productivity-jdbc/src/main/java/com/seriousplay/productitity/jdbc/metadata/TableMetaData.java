@@ -1,8 +1,8 @@
-package com.seriousplay.productitity.jdbc;
+package com.seriousplay.productitity.jdbc.metadata;
 
+import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
-
 /**
  *
  */
@@ -51,6 +51,12 @@ public interface TableMetaData {
     String getLogicField();
 
     default String selectAllColumns(boolean useAlias) {
-        return (useAlias ? getAlias() : getTableName()) + ".*";
+        StringJoiner joiner = new StringJoiner(",");
+        for (TableColumnMetaData column : getColumns()) {
+            if (column.select()) {
+                joiner.add(useAlias ? column.getColumnAlias() : column.getColumn());
+            }
+        }
+        return joiner.toString();
     }
 }

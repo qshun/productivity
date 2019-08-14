@@ -1,6 +1,4 @@
-package com.seriousplay.productitity.jdbc.functions.mysql;
-
-import com.seriousplay.productitity.jdbc.SqlFunction;
+package com.seriousplay.productitity.jdbc.query.functions.mysql;
 
 public abstract class MysqlFuntions {
     /**
