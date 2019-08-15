@@ -70,7 +70,8 @@ public class Criteria<T> {
      */
     public Criteria<T> sql(String sql, Object... parameters) {
         PositionParameterSql positionParameterSql = PositionParameterSql.parseSql(sql, parameters);
-        Criterion criterion = new Criterion(this, positionParameterSql.getParsedSql().toString(), positionParameterSql.getParameters());
+        Criterion criterion = new Criterion(this, positionParameterSql.getSql().toString(),
+                positionParameterSql.getParameters());
         this.getAllCriteria().add(criterion);
         return this;
     }
@@ -82,7 +83,7 @@ public class Criteria<T> {
      */
     public Criteria<T> sql(String sql, List<Object> parameters) {
         PositionParameterSql positionParameterSql = PositionParameterSql.parseSql(sql, parameters);
-        Criterion criterion = new Criterion(this, positionParameterSql.getParsedSql().toString(), positionParameterSql.getParameters());
+        Criterion criterion = new Criterion(this, positionParameterSql.getSql().toString(), positionParameterSql.getParameters());
         this.getAllCriteria().add(criterion);
         return this;
     }

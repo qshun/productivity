@@ -35,7 +35,7 @@ public class UpdateQuery<T, C> extends AbstractQuery<UpdateQuery<T, C>, T, C> {
      */
     public UpdateQuery<T, C> set(String sql, Object... parameters) {
         PositionParameterSql parameterSql = PositionParameterSql.parseSql(sql, parameters);
-        Criterion criterion = new Criterion(parameterSql.getParsedSql().toString(), parameterSql.getParameters());
+        Criterion criterion = new Criterion(parameterSql.getSql().toString(), parameterSql.getParameters());
         addCriterion(criterion);
         return getSelf();
     }
@@ -47,7 +47,7 @@ public class UpdateQuery<T, C> extends AbstractQuery<UpdateQuery<T, C>, T, C> {
      */
     public UpdateQuery<T, C> set(String sql, List<Object> parameters) {
         PositionParameterSql parameterSql = PositionParameterSql.parseSql(sql, parameters);
-        Criterion criterion = new Criterion(parameterSql.getParsedSql().toString(), parameterSql.getParameters());
+        Criterion criterion = new Criterion(parameterSql.getSql().toString(), parameterSql.getParameters());
         addCriterion(criterion);
         return getSelf();
     }

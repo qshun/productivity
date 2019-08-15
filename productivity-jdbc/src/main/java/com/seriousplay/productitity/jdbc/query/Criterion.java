@@ -1,6 +1,7 @@
 package com.seriousplay.productitity.jdbc.query;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.StringJoiner;
 
 public class Criterion {
     protected String condition;
@@ -16,34 +17,35 @@ public class Criterion {
         super();
     }
 
-    Criterion(String condition) {
+    public Criterion(String condition) {
         this();
         this.condition = condition;
         this.typeHandler = null;
         this.noValue = true;
     }
 
-    Criterion(String condition, Object value) {
+    public Criterion(String condition, Object value) {
         this(condition, value, null);
     }
 
-    Criterion(String condition, Object value, String typeHandler) {
+    public Criterion(String condition, Object value, String typeHandler) {
         this();
         this.condition = condition;
         this.value = value;
         this.typeHandler = typeHandler;
-        if (value instanceof List<?>) {
+        if (value instanceof Collection) {
             this.listValue = true;
+
         } else {
             this.singleValue = true;
         }
     }
 
-    Criterion(String condition, Object value, Object secondValue) {
+    public Criterion(String condition, Object value, Object secondValue) {
         this(condition, value, secondValue, null);
     }
 
-    Criterion(String condition, Object value, Object secondValue, String typeHandler) {
+    public Criterion(String condition, Object value, Object secondValue, String typeHandler) {
         this();
         this.condition = condition;
         this.value = value;
@@ -80,4 +82,17 @@ public class Criterion {
         return listValue;
     }
 
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", Criterion.class.getSimpleName() + "[", "]")
+                .add("condition='" + condition + "'")
+                .add("value=" + value)
+                .add("secondValue=" + secondValue)
+                .add("noValue=" + noValue)
+                .add("singleValue=" + singleValue)
+                .add("betweenValue=" + betweenValue)
+                .add("listValue=" + listValue)
+                .add("typeHandler='" + typeHandler + "'")
+                .toString();
+    }
 }
