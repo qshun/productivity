@@ -2,19 +2,22 @@ package com.seriousplay.productitity.jdbc.query;
 
 import com.seriousplay.productitity.jdbc.SqlOperator;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.SqlTypeValue;
+import org.springframework.jdbc.core.StatementCreatorUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public abstract class AbstractQuery<Q, T, C> {
+public abstract class AbstractQuery<Q, T, C> implements PreparedStatementCreator {
     private static final String AND = ") \nAND (";
     private static final String OR = ") \nOR (";
     protected BiFunction<T, Boolean, String> tableToStringFunction;
@@ -345,56 +348,73 @@ public abstract class AbstractQuery<Q, T, C> {
             String curCondition = criterion.getCondition();
             if (j > 0 && j < criteria.getCriteria().size()) {
                 if ("(".equals(lastCondition)) {
-                    if (SqlOperator.OR.getCondition().equals(curCondition) || SqlOperator.AND.getCondition().equals(curCondition)) {
+                    if (SqlOperator.OR.getOperator().equals(curCondition) || SqlOperator.AND.getOperator().equals(curCondition)) {
                         lastCondition = curCondition;
                         continue;
                     }
                 }
-                boolean appendAnd = !("(".equals(lastCondition) || SqlOperator.OR.getCondition().equals(lastCondition) || SqlOperator.AND.getCondition().equals(lastCondition) || SqlOperator.OR.getCondition().equals(curCondition) || SqlOperator.AND.getCondition().equals(curCondition) || ")".equals(curCondition));
+                boolean appendAnd = !("(".equals(lastCondition)
+                        || SqlOperator.OR.getOperator().equals(lastCondition)
+                        || SqlOperator.AND.getOperator().equals(lastCondition)
+                        || SqlOperator.OR.getOperator().equals(curCondition)
+                        || SqlOperator.AND.getOperator().equals(curCondition)
+                        || ")".equals(curCondition));
                 if (appendAnd) {
-                    builder.append(" ").append(SqlOperator.AND.getCondition()).append(" ");
+                    builder.append(" ").append(SqlOperator.AND.getOperator()).append(" ");
                 }
-            } else if (SqlOperator.OR.getCondition().equals(curCondition) || SqlOperator.AND.getCondition().equals(curCondition)) {
+            } else if (SqlOperator.OR.getOperator().equals(curCondition) || SqlOperator.AND.getOperator().equals(curCondition)) {
                 lastCondition = curCondition;
                 continue;
             }
-            if (criterion.isNoValue()) {
-                if (SqlOperator.OR.getCondition().equals(curCondition) || SqlOperator.AND.getCondition().equals(curCondition)) {
-                    builder.append(" ");
-                }
-                builder.append(criterion.getCondition());
-                if (SqlOperator.OR.getCondition().equals(curCondition) || SqlOperator.AND.getCondition().equals(curCondition)) {
-                    builder.append(" ");
-                }
-            } else if (criterion.isSingleValue()) {
-                builder.append(criterion.getCondition()).append(" ?");
-                addParameter(criterion.getValue());
-            } else if (criterion.isBetweenValue()) {
-                builder.append(criterion.getCondition()).append(" ?").append(" and ?");
-                addParameter(criterion.getValue());
-                addParameter(criterion.getSecondValue());
-            } else if (criterion.isListValue()) {
-                List<Object> value = (List<Object>) criterion.getValue();
-                boolean inCondition = SqlOperator.IN.getCondition().equals(curCondition);
-                builder.append(criterion.getCondition());
-                if (inCondition) {
-                    if (CollectionUtils.isEmpty(value)) {
-                        throw new RuntimeException("Value for condition cannot be null");
+            switch (criterion.valueType) {
+                case NO_VALUE: {
+                    if (SqlOperator.OR.getOperator().equals(curCondition) || SqlOperator.AND.getOperator().equals(curCondition)) {
+                        builder.append(" ");
                     }
-                    builder.append("(");
-                    int i = 0;
-                    for (Object one : value) {
-                        if (i++ > 0) {
-                            builder.append(",");
+                    builder.append(criterion.getCondition());
+                    if (SqlOperator.OR.getOperator().equals(curCondition) || SqlOperator.AND.getOperator().equals(curCondition)) {
+                        builder.append(" ");
+                    }
+                    break;
+                }
+                case SINGLE_VALUE: {
+                    builder.append(criterion.getCondition()).append(" ?");
+                    addParameter(criterion.getValue());
+                    break;
+                }
+                case DOUBLE_VALUE: {
+                    builder.append(criterion.getCondition()).append(" ?").append(" and ?");
+                    addParameter(criterion.getValue());
+                    addParameter(criterion.getSecondValue());
+                    break;
+                }
+                case LIST_VALUE: {
+                    List<Object> value = (List<Object>) criterion.getValue();
+                    boolean inCondition = SqlOperator.IN.getOperator().equals(curCondition);
+                    builder.append(criterion.getCondition());
+                    if (inCondition) {
+                        if (CollectionUtils.isEmpty(value)) {
+                            throw new RuntimeException("Value for condition cannot be null");
                         }
-                        builder.append("?");
-                        addParameter(one);
+                        builder.append("(");
+                        int i = 0;
+                        for (Object one : value) {
+                            if (i++ > 0) {
+                                builder.append(",");
+                            }
+                            builder.append("?");
+                            addParameter(one);
+                        }
+                        builder.append(")");
+                    } else {
+                        for (Object o : value) {
+                            addParameter(o);
+                        }
                     }
-                    builder.append(")");
-                } else {
-                    for (Object o : value) {
-                        addParameter(o);
-                    }
+                }
+                break;
+                default: {
+                    break;
                 }
             }
             j++;
@@ -412,6 +432,20 @@ public abstract class AbstractQuery<Q, T, C> {
 
     public Map<String, Object> getParamNameValuePairs() {
         return paramNameValuePairs;
+    }
+
+    @Override
+    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement(toSQL());
+        if (CollectionUtils.isEmpty(paramNameValuePairs)) {
+            return ps;
+        }
+        Iterator<Map.Entry<String, Object>> iterator = paramNameValuePairs.entrySet().iterator();
+        for (int i = 1; iterator.hasNext(); i++) {
+            Map.Entry<String, Object> next = iterator.next();
+            StatementCreatorUtils.setParameterValue(ps, i, SqlTypeValue.TYPE_UNKNOWN, next.getKey(), next.getValue());
+        }
+        return ps;
     }
 
     protected static class SafeAppendable {

@@ -121,7 +121,7 @@ public class Criteria<T> {
     private Criteria condition(Criteria<T> criteria, SqlOperator SqlOperator) {
         if (SqlOperator.OR.equals(SqlOperator) || SqlOperator.AND.equals(SqlOperator)) {
             if (criteria != this && criteria.getCriteria().size() > 0) {
-                addCriterion(SqlOperator.getCondition());
+                addCriterion(SqlOperator.getOperator());
                 boolean appendParentheses = criteria.getCriteria().size() > 1;
                 if (appendParentheses) {
                     addCriterion("(");
@@ -369,7 +369,7 @@ public class Criteria<T> {
 
         protected Criteria<T> addCondition(SqlOperator operator) {
             this.condition = operator.format(this.condition);
-            this.noValue = true;
+            this.valueType = SqlValueType.NO_VALUE;
             return criteria.condition(this);
 
         }
@@ -380,11 +380,10 @@ public class Criteria<T> {
             }
             this.condition = operator.format(this.condition);
             this.value = value;
-            this.noValue = false;
             if (value instanceof List<?>) {
-                this.listValue = true;
+                this.valueType = SqlValueType.LIST_VALUE;
             } else {
-                this.singleValue = true;
+                this.valueType = SqlValueType.SINGLE_VALUE;
             }
             return criteria.condition(this);
 
@@ -397,8 +396,7 @@ public class Criteria<T> {
             this.condition = operator.format(this.condition);
             this.value = value1;
             this.secondValue = value2;
-            this.noValue = false;
-            this.betweenValue = true;
+            this.valueType = SqlValueType.DOUBLE_VALUE;
             return criteria.condition(this);
 
         }

@@ -1,7 +1,15 @@
 package com.seriousplay.productitity.jdbc;
 
-import com.seriousplay.productitity.jdbc.query.AbstractSqlBuilder;
+import com.seriousplay.productitity.jdbc.query.AbstractCriterionBuilder;
 import com.seriousplay.productitity.jdbc.query.functions.SqlFunction;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.StatementCreatorUtils;
+import org.springframework.util.CollectionUtils;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,7 +18,7 @@ import java.util.regex.Pattern;
 /**
  *
  */
-public class PositionParameterSql extends AbstractSqlBuilder<PositionParameterSql> {
+public class PositionParameterSql extends AbstractCriterionBuilder<PositionParameterSql> implements PreparedStatementCreator {
     private static final Pattern PARAMETER_PATTERN = Pattern.compile("([\\?|#])\\d+");
     private String originalSql;
     private List<Object> parameters;
@@ -121,5 +129,19 @@ public class PositionParameterSql extends AbstractSqlBuilder<PositionParameterSq
         }
         matcher.appendTail(stringBuffer);
         return parameterSql;
+    }
+
+    @Override
+    public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement(sql.toString());
+        if (!CollectionUtils.isEmpty(parameters)) {
+            Iterator<Object> it = this.parameters.iterator();
+            for (int i = 1; it.hasNext(); i++) {
+                Object value = it.next();
+                int sqlType = StatementCreatorUtils.javaTypeToSqlParameterType(value.getClass());
+                StatementCreatorUtils.setParameterValue(ps, i, sqlType, value);
+            }
+        }
+        return ps;
     }
 }

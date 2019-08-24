@@ -3,14 +3,14 @@ package com.seriousplay.productitity.jdbc.query;
 import java.util.Collection;
 import java.util.StringJoiner;
 
+/**
+ *
+ */
 public class Criterion {
     protected String condition;
     protected Object value;
     protected Object secondValue;
-    protected boolean noValue;
-    protected boolean singleValue;
-    protected boolean betweenValue;
-    protected boolean listValue;
+    protected SqlValueType valueType;
     protected String typeHandler;
 
     protected Criterion() {
@@ -21,7 +21,7 @@ public class Criterion {
         this();
         this.condition = condition;
         this.typeHandler = null;
-        this.noValue = true;
+        this.valueType = SqlValueType.NO_VALUE;
     }
 
     public Criterion(String condition, Object value) {
@@ -34,10 +34,11 @@ public class Criterion {
         this.value = value;
         this.typeHandler = typeHandler;
         if (value instanceof Collection) {
-            this.listValue = true;
-
+            this.valueType = SqlValueType.LIST_VALUE;
+        } else if (value instanceof Object[]) {
+            this.valueType = SqlValueType.LIST_VALUE;
         } else {
-            this.singleValue = true;
+            this.valueType = SqlValueType.SINGLE_VALUE;
         }
     }
 
@@ -51,7 +52,7 @@ public class Criterion {
         this.value = value;
         this.secondValue = secondValue;
         this.typeHandler = typeHandler;
-        this.betweenValue = true;
+        this.valueType = SqlValueType.DOUBLE_VALUE;
     }
 
     public String getCondition() {
@@ -67,19 +68,19 @@ public class Criterion {
     }
 
     public boolean isNoValue() {
-        return noValue;
+        return SqlValueType.NO_VALUE.equals(valueType);
     }
 
     public boolean isSingleValue() {
-        return singleValue;
+        return SqlValueType.SINGLE_VALUE.equals(valueType);
     }
 
     public boolean isBetweenValue() {
-        return betweenValue;
+        return SqlValueType.DOUBLE_VALUE.equals(valueType);
     }
 
     public boolean isListValue() {
-        return listValue;
+        return SqlValueType.LIST_VALUE.equals(valueType);
     }
 
     @Override
@@ -88,10 +89,7 @@ public class Criterion {
                 .add("condition='" + condition + "'")
                 .add("value=" + value)
                 .add("secondValue=" + secondValue)
-                .add("noValue=" + noValue)
-                .add("singleValue=" + singleValue)
-                .add("betweenValue=" + betweenValue)
-                .add("listValue=" + listValue)
+                .add("valueType=" + valueType)
                 .add("typeHandler='" + typeHandler + "'")
                 .toString();
     }

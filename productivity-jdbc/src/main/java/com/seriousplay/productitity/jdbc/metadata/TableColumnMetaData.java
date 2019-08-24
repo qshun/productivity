@@ -102,7 +102,7 @@ public interface TableColumnMetaData {
      * @return
      */
     default String getUpdateCondition() {
-        return SqlOperator.EQ.getCondition();
+        return SqlOperator.EQ.getOperator();
     }
 
     /**
@@ -111,7 +111,7 @@ public interface TableColumnMetaData {
      * @return
      */
     default String getCondition() {
-        return SqlOperator.EQ.getCondition();
+        return SqlOperator.EQ.getOperator();
     }
 
     /**

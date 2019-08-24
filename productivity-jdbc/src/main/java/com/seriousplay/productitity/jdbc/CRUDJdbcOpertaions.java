@@ -61,15 +61,6 @@ public class CRUDJdbcOpertaions {
     @Autowired
     private JdbcOperations jdbcOperations;
 
-    /**
-     * @param mappedClass
-     * @param sql
-     * @param <T>
-     * @return
-     */
-    public <T> T selectOne(Class<T> mappedClass, String sql) {
-        return selectOne(mappedClass, sql, null);
-    }
 
     /**
      * @param mappedClass
@@ -118,18 +109,27 @@ public class CRUDJdbcOpertaions {
      * @return
      */
     public <T> List<T> selectList(Class<T> mappedClass, SelectQuery selectQuery) {
-        return selectList(mappedClass, selectQuery.toSQL(), selectQuery.getParamNameValuePairs().values().toArray());
+        return selectList(mappedClass, selectQuery);
+    }
+
+    /***
+     *
+     * @param mappedClass
+     * @param <T>
+     * @return
+     */
+    public <T> List<T> selectList(Class<T> mappedClass, PositionParameterSql positionParameterSql) {
+        return selectList(mappedClass, positionParameterSql);
     }
 
     /**
      * @param mappedClass
-     * @param sql
+     * @param statementCreator
      * @param <T>
      * @return
      */
-    public <T> List<T> selectList(Class<T> mappedClass, String sql) {
-        return selectList(mappedClass, sql, null);
-
+    public <T> List<T> selectList(Class<T> mappedClass, PreparedStatementCreator statementCreator) {
+        return jdbcOperations.query(statementCreator, getRowMapper(mappedClass));
     }
 
     /**
@@ -155,21 +155,36 @@ public class CRUDJdbcOpertaions {
      * @return
      */
     public <K, V> Map<K, V> selectMap(Class<V> mappedClass, SelectQuery selectQuery, Function<V, K> keyExtractor) {
-        String sql = selectQuery.toSQL();
-        return selectMap(mappedClass, sql, keyExtractor, selectQuery.getParameters());
+        return selectMap(mappedClass, keyExtractor, selectQuery);
 
     }
 
     /**
      * @param mappedClass
-     * @param sql
      * @param keyExtractor
+     * @param positionParameterSql
      * @param <K>
      * @param <V>
      * @return
      */
-    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, String sql, Function<V, K> keyExtractor) {
-        return selectMap(mappedClass, sql, keyExtractor, null);
+    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, Function<V, K> keyExtractor,
+                                      PositionParameterSql positionParameterSql) {
+        return selectMap(mappedClass, keyExtractor, positionParameterSql);
+    }
+
+    /**
+     * @param mappedClass
+     * @param keyExtractor
+     * @param statementCreator
+     * @param <K>
+     * @param <V>
+     * @return
+     */
+    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, Function<V, K> keyExtractor,
+                                      PreparedStatementCreator statementCreator) {
+        RowMapper<V> rowMapper = getRowMapper(mappedClass);
+        ResultSetExtractor<Map<K, V>> resultExtractor = new MapRowMapperResultExtractor<>(keyExtractor, rowMapper);
+        return jdbcOperations.query(statementCreator, resultExtractor);
     }
 
     /**
@@ -181,21 +196,14 @@ public class CRUDJdbcOpertaions {
      * @param <V>
      * @return
      */
-    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, String sql, Function<V, K> keyExtractor, Object... args) {
+    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, Function<V, K> keyExtractor, String sql, Object... args) {
         final Map<K, V> resultMap = new LinkedHashMap<>();
         RowMapper<V> rowMapper = getRowMapper(mappedClass);
+        ResultSetExtractor<Map<K, V>> resultExtractor = new MapRowMapperResultExtractor<>(keyExtractor, rowMapper);
         if (args == null || args.length == 0) {
-            jdbcOperations.query(sql, rs -> {
-                V entity = rowMapper.mapRow(rs, rs.getRow());
-                K key = keyExtractor.apply(entity);
-                resultMap.put(key, entity);
-            });
+            return jdbcOperations.query(sql, resultExtractor);
         } else {
-            jdbcOperations.query(sql, rs -> {
-                V entity = rowMapper.mapRow(rs, rs.getRow());
-                K key = keyExtractor.apply(entity);
-                resultMap.put(key, entity);
-            }, args);
+            jdbcOperations.query(sql, resultExtractor, args);
         }
 
         return resultMap;
@@ -568,6 +576,15 @@ public class CRUDJdbcOpertaions {
      */
     public <T> int updateByKey(T entity, String tableName, TableColumnMetaData[] tableColumns) {
         return updateByKey(entity, null, tableName, tableColumns);
+    }
+
+    /**
+     * @param positionParameterSql
+     * @return
+     */
+    public int update(PositionParameterSql positionParameterSql) {
+        return jdbcOperations.update(positionParameterSql.getSql().toString(),
+                positionParameterSql.getParameters().toArray());
     }
 
     /**
