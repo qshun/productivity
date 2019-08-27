@@ -16,9 +16,8 @@ public class CriterionBuilder extends AbstractCriterionBuilder<CriterionBuilder>
         return this;
     }
 
-    public CriterionBuilder func(FunctionCriterionBulider fun) {
-        this.sql.append(fun.getSql());
-        this.parameters.addAll(fun.parameters);
-        return getSelf();
+    public static CriterionBuilder getInstance() {
+        return new CriterionBuilder();
     }
 }
+

@@ -1,5 +1,6 @@
 package com.seriousplay.productitity.jdbc.query;
 
+import com.seriousplay.productitity.jdbc.metadata.TableMetaData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -108,6 +109,16 @@ public class SelectQuery<T, C> extends AbstractQuery<SelectQuery<T, C>, T, C> {
             }
             select.addCriterion(buffer.toString());
         }
+        return getSelf();
+    }
+
+    public SelectQuery<T, C> selectAll(TableMetaData tableMetaData) {
+        select.addCriterion(tableMetaData.selectAllColumns(true));
+        return getSelf();
+    }
+
+    public SelectQuery<T, C> selectAll(TableMetaData tableMetaData, String tableAlias) {
+        select.addCriterion(tableMetaData.selectAllColumns(tableAlias));
         return getSelf();
     }
 

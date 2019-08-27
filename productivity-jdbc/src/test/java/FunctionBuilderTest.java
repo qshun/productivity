@@ -1,20 +1,21 @@
-import com.seriousplay.productitity.jdbc.SqlOperator;
-import com.seriousplay.productitity.jdbc.query.FunctionCriterionBulider;
+import com.seriousplay.productitity.jdbc.query.CriterionBuilder;
 import org.junit.Test;
 
-import static com.seriousplay.productitity.jdbc.query.FunctionCriterionBulider.start;
+import java.util.Arrays;
+
 import static com.seriousplay.productitity.jdbc.query.functions.mysql.MysqlFuntions.ControlFlowFunction.IF;
 import static com.seriousplay.productitity.jdbc.query.functions.mysql.MysqlFuntions.ControlFlowFunction.IFNULL;
 
 public class FunctionBuilderTest {
     @Test
     public void testCreateSimpleFunction() {
-        FunctionCriterionBulider bulider = start(IFNULL)
-                .func(start(IF).column("adb", "t4").operator(SqlOperator.EQ).value("1").comma()
-                        .value("1").comma()
-                        .value("null"))
-                .comma()
-                .value(5667);
+        CriterionBuilder bulider = new CriterionBuilder()
+                .func(IFNULL, f -> f.func(IF,
+                        f1 -> f1.column("t.a").in(Arrays.asList(566,678)),
+                        f2 -> f2.value(1),
+                        f3 -> f3.value(null)),
+                        f4 -> f4.value("11"));
+
         System.out.println(bulider.build());
     }
 }

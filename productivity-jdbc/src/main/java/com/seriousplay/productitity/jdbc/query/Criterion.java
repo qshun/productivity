@@ -7,7 +7,7 @@ import java.util.StringJoiner;
  *
  */
 public class Criterion {
-    protected String condition;
+    protected String sql;
     protected Object value;
     protected Object secondValue;
     protected SqlValueType valueType;
@@ -17,20 +17,20 @@ public class Criterion {
         super();
     }
 
-    public Criterion(String condition) {
+    public Criterion(String sql) {
         this();
-        this.condition = condition;
+        this.sql = sql;
         this.typeHandler = null;
         this.valueType = SqlValueType.NO_VALUE;
     }
 
-    public Criterion(String condition, Object value) {
-        this(condition, value, null);
+    public Criterion(String sql, Object value) {
+        this(sql, value, null);
     }
 
-    public Criterion(String condition, Object value, String typeHandler) {
+    public Criterion(String sql, Object value, String typeHandler) {
         this();
-        this.condition = condition;
+        this.sql = sql;
         this.value = value;
         this.typeHandler = typeHandler;
         if (value instanceof Collection) {
@@ -42,21 +42,21 @@ public class Criterion {
         }
     }
 
-    public Criterion(String condition, Object value, Object secondValue) {
-        this(condition, value, secondValue, null);
+    public Criterion(String sql, Object value, Object secondValue) {
+        this(sql, value, secondValue, null);
     }
 
-    public Criterion(String condition, Object value, Object secondValue, String typeHandler) {
+    public Criterion(String sql, Object value, Object secondValue, String typeHandler) {
         this();
-        this.condition = condition;
+        this.sql = sql;
         this.value = value;
         this.secondValue = secondValue;
         this.typeHandler = typeHandler;
         this.valueType = SqlValueType.DOUBLE_VALUE;
     }
 
-    public String getCondition() {
-        return condition;
+    public String getSql() {
+        return sql;
     }
 
     public Object getValue() {
@@ -86,7 +86,7 @@ public class Criterion {
     @Override
     public String toString() {
         return new StringJoiner(", ", Criterion.class.getSimpleName() + "[", "]")
-                .add("condition='" + condition + "'")
+                .add("condition='" + sql + "'")
                 .add("value=" + value)
                 .add("secondValue=" + secondValue)
                 .add("valueType=" + valueType)

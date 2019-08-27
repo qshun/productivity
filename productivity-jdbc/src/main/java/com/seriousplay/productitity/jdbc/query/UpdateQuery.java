@@ -153,7 +153,7 @@ public class UpdateQuery<T, C> extends AbstractQuery<UpdateQuery<T, C>, T, C> {
                     builder.append(",");
                 }
                 Criterion criterion = it.next();
-                builder.append(criterion.getCondition());
+                builder.append(criterion.getSql());
                 if (criterion.isSingleValue()) {
                     builder.append(" ?");
                     addParameter(criterion.getValue());

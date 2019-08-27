@@ -353,7 +353,7 @@ public class Criteria<T> {
             }
             String columnName = criteria.getColumnToString().apply(column, false);
             String actualColumn = StringUtils.isNotBlank(tableAlias) ? tableAlias + "." + columnName : columnName;
-            this.condition = operator.format(this.condition, actualColumn);
+            this.sql = operator.format(this.sql, actualColumn);
             return criteria.condition(this);
 
         }
@@ -362,13 +362,13 @@ public class Criteria<T> {
             if (column == null) {
                 throw new RuntimeException("Value for condition cannot be null");
             }
-            this.condition = operator.format(this.condition, criteria.getColumnToString().apply(column, true));
+            this.sql = operator.format(this.sql, criteria.getColumnToString().apply(column, true));
             return criteria.condition(this);
 
         }
 
         protected Criteria<T> addCondition(SqlOperator operator) {
-            this.condition = operator.format(this.condition);
+            this.sql = operator.format(this.sql);
             this.valueType = SqlValueType.NO_VALUE;
             return criteria.condition(this);
 
@@ -378,7 +378,7 @@ public class Criteria<T> {
             if (value == null) {
                 throw new RuntimeException("Value for condition cannot be null");
             }
-            this.condition = operator.format(this.condition);
+            this.sql = operator.format(this.sql);
             this.value = value;
             if (value instanceof List<?>) {
                 this.valueType = SqlValueType.LIST_VALUE;
@@ -391,9 +391,9 @@ public class Criteria<T> {
 
         protected Criteria<T> addCondition(SqlOperator operator, Object value1, Object value2) {
             if (value1 == null || value2 == null) {
-                throw new RuntimeException("Between values for " + condition + " cannot be null");
+                throw new RuntimeException("Between values for " + sql + " cannot be null");
             }
-            this.condition = operator.format(this.condition);
+            this.sql = operator.format(this.sql);
             this.value = value1;
             this.secondValue = value2;
             this.valueType = SqlValueType.DOUBLE_VALUE;

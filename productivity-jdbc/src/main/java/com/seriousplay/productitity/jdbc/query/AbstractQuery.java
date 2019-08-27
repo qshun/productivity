@@ -345,7 +345,7 @@ public abstract class AbstractQuery<Q, T, C> implements PreparedStatementCreator
         int j = 0;
         String lastCondition = null;
         for (Criteria.Criterion criterion : criteria.getCriteria()) {
-            String curCondition = criterion.getCondition();
+            String curCondition = criterion.getSql();
             if (j > 0 && j < criteria.getCriteria().size()) {
                 if ("(".equals(lastCondition)) {
                     if (SqlOperator.OR.getOperator().equals(curCondition) || SqlOperator.AND.getOperator().equals(curCondition)) {
@@ -371,19 +371,19 @@ public abstract class AbstractQuery<Q, T, C> implements PreparedStatementCreator
                     if (SqlOperator.OR.getOperator().equals(curCondition) || SqlOperator.AND.getOperator().equals(curCondition)) {
                         builder.append(" ");
                     }
-                    builder.append(criterion.getCondition());
+                    builder.append(criterion.getSql());
                     if (SqlOperator.OR.getOperator().equals(curCondition) || SqlOperator.AND.getOperator().equals(curCondition)) {
                         builder.append(" ");
                     }
                     break;
                 }
                 case SINGLE_VALUE: {
-                    builder.append(criterion.getCondition()).append(" ?");
+                    builder.append(criterion.getSql()).append(" ?");
                     addParameter(criterion.getValue());
                     break;
                 }
                 case DOUBLE_VALUE: {
-                    builder.append(criterion.getCondition()).append(" ?").append(" and ?");
+                    builder.append(criterion.getSql()).append(" ?").append(" and ?");
                     addParameter(criterion.getValue());
                     addParameter(criterion.getSecondValue());
                     break;
@@ -391,7 +391,7 @@ public abstract class AbstractQuery<Q, T, C> implements PreparedStatementCreator
                 case LIST_VALUE: {
                     List<Object> value = (List<Object>) criterion.getValue();
                     boolean inCondition = SqlOperator.IN.getOperator().equals(curCondition);
-                    builder.append(criterion.getCondition());
+                    builder.append(criterion.getSql());
                     if (inCondition) {
                         if (CollectionUtils.isEmpty(value)) {
                             throw new RuntimeException("Value for condition cannot be null");
@@ -418,7 +418,7 @@ public abstract class AbstractQuery<Q, T, C> implements PreparedStatementCreator
                 }
             }
             j++;
-            lastCondition = criterion.getCondition();
+            lastCondition = criterion.getSql();
         }
     }
 

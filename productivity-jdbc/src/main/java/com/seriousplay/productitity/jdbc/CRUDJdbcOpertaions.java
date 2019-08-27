@@ -155,7 +155,7 @@ public class CRUDJdbcOpertaions {
      * @return
      */
     public <K, V> Map<K, V> selectMap(Class<V> mappedClass, SelectQuery selectQuery, Function<V, K> keyExtractor) {
-        return selectMap(mappedClass, keyExtractor, selectQuery);
+        return selectMap(mappedClass, selectQuery, keyExtractor);
 
     }
 
@@ -167,9 +167,9 @@ public class CRUDJdbcOpertaions {
      * @param <V>
      * @return
      */
-    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, Function<V, K> keyExtractor,
-                                      PositionParameterSql positionParameterSql) {
-        return selectMap(mappedClass, keyExtractor, positionParameterSql);
+    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, PositionParameterSql positionParameterSql, Function<V, K> keyExtractor
+    ) {
+        return selectMap(mappedClass, positionParameterSql, keyExtractor);
     }
 
     /**
@@ -180,8 +180,7 @@ public class CRUDJdbcOpertaions {
      * @param <V>
      * @return
      */
-    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, Function<V, K> keyExtractor,
-                                      PreparedStatementCreator statementCreator) {
+    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, PreparedStatementCreator statementCreator, Function<V, K> keyExtractor) {
         RowMapper<V> rowMapper = getRowMapper(mappedClass);
         ResultSetExtractor<Map<K, V>> resultExtractor = new MapRowMapperResultExtractor<>(keyExtractor, rowMapper);
         return jdbcOperations.query(statementCreator, resultExtractor);
@@ -196,7 +195,7 @@ public class CRUDJdbcOpertaions {
      * @param <V>
      * @return
      */
-    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, Function<V, K> keyExtractor, String sql, Object... args) {
+    public <K, V> Map<K, V> selectMap(Class<V> mappedClass, String sql, Function<V, K> keyExtractor, Object... args) {
         final Map<K, V> resultMap = new LinkedHashMap<>();
         RowMapper<V> rowMapper = getRowMapper(mappedClass);
         ResultSetExtractor<Map<K, V>> resultExtractor = new MapRowMapperResultExtractor<>(keyExtractor, rowMapper);
