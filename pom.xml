@@ -19,7 +19,7 @@
         <dubbo.version>2.7.3</dubbo.version>
         <dubbo.boot.version>2.7.1</dubbo.boot.version>
         <curator.version>4.2.0</curator.version>
-        <resteasy.version>3.8.1.Final</resteasy.version>
+        <resteasy.version>4.6.1.Final</resteasy.version>
         <sentinel.version>1.6.3</sentinel.version>
         <kryo.version>4.0.2</kryo.version>
         <kryo-serializers.version>0.45</kryo-serializers.version>
